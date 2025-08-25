@@ -1,4 +1,4 @@
-# Minecraft Datapacks Monorepo
+# Minecraft Datapacks
 
 A collection of **Minecraft datapacks** developed and maintained by me.  
 Each pack enhances survival gameplay with new mechanics, quality-of-life features, and unique challenges.
