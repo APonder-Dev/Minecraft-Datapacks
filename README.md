@@ -20,13 +20,7 @@ Each pack enhances survival gameplay with new mechanics, quality-of-life feature
 
 ---
 
-### ⚠️ DurabilityPing
-- **Version:** Minecraft 1.21.x
-- **Description:** Alerts players when tools/armor are about to break.
-- **Features:**
-  - Actionbar + sound ping at ≤10 and ≤1 durability.
-  - Covers all tools, weapons, and armor.
-  - Plug-and-play, no config required.
+### Coming Soon
 
 ---
 
