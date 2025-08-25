@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "pack_format": 48,
+    "description": "MobMutationPack \u2014 mobs spawn with buffs, debuff auras, and on-hit effects (with toggles)"
+  }
+}
