@@ -5,7 +5,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Buiilds
+# Builds
 *.zip
 dist/
 out/

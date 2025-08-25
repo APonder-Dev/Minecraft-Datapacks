@@ -18,9 +18,15 @@ Each pack enhances survival gameplay with new mechanics, quality-of-life feature
   - Per-feature toggles (`/function mobmut:toggle/...`).
   - Eligible mob list in `data/mobmut/tags/entity_types/eligible.json`.
 
----
-
-### Coming Soon
+### 🗡️ ApexMobs
+- **Version:** Minecraft 1.21.x (`pack_format: 48`)
+- **Description:** Ordinary mobs have a small chance to become **Apex** mini‑bosses with tougher stats, special on‑hit abilities, and bonus loot.
+- **Features:**
+  - Configurable **promotion chance**.
+  - Visual flair (glow, particles) and custom names (e.g., *Apex Skeleton*).
+  - On‑hit effects (e.g., Slowness arrows, Wither bites, Poison from Creeper blasts).
+  - Bonus loot via custom loot table.
+  - Eligible mob list in `data/apex/tags/entity_types/eligible.json`.
 
 ---
 
@@ -58,7 +64,22 @@ Each pack enhances survival gameplay with new mechanics, quality-of-life feature
 - Eligible mobs:  
   Edit `data/mobmut/tags/entity_types/eligible.json`.
 
-### Coming Soon
+### ApexMobsPack
+- Print current config:
+  ```mcfunction
+  /function apex:say_config
+  ```
+- Change Apex promotion chance (percent):
+  ```mcfunction
+  /scoreboard players set cfg.apex_chance apex.cfg <0-100>
+  ```
+- Toggle glow / particles (0 = off, 1 = on):
+  ```mcfunction
+  /scoreboard players set cfg.glow apex.cfg <0|1>
+  /scoreboard players set cfg.particles apex.cfg <0|1>
+  ```
+- Eligible mobs:  
+  Edit `data/mobmut/tags/entity_types/eligible.json`.
 
 ---
 
@@ -80,9 +101,11 @@ Workflow file: `.github/workflows/build-datapacks.yml`
 ├─ packs/                   # Datapacks live here
 │  ├─ MobMutationPack/
 │  │  ├─ pack.mcmeta
-│  │  ├─ pack.png
 │  │  └─ data/...
-│  └─ Coming Soon.
+│  ├─ ApexMobs/
+│  │  ├─ pack.mcmeta
+│  │  └─ data/...
+│  └─ Coming Soon/
 ├─ .github/workflows/       # GitHub Actions configs
 ├─ .gitignore
 ├─ .gitattributes

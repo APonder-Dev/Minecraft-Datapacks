@@ -1,49 +1,96 @@
-name: Build Datapacks
+name: Build Datapacks (separate artifacts)
 
 on:
   push:
-    branches: [ "**" ]
-    tags: [ "v*" ]
+    branches: ["**"]
+    tags: ["v*"]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  build:
+  discover:
     runs-on: ubuntu-latest
+    outputs:
+      packs: ${{ steps.find.outputs.packs }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Zip all packs in /packs
+      - name: Find pack folders
+        id: find
+        shell: bash
         run: |
-          mkdir -p artifacts
           shopt -s nullglob
-          for d in packs/*/ ; do
-            name=$(basename "$d")
-            zip -r "artifacts/${name}.zip" "$d" -x "*.git*" "*.github*" "*/.DS_Store"
-          done
-          ls -l artifacts
+          arr=(packs/*/)
+          if [ ${#arr[@]} -eq 0 ]; then
+            echo "No packs found in /packs"; exit 1
+          fi
+          # Convert to JSON array of basenames: ["MobMutationPack","ApexMobs",...]
+          list=$(printf '%s\n' "${arr[@]}" | xargs -n1 basename | jq -R -s -c 'split("\n")|map(select(length>0))')
+          echo "Found packs: $list"
+          echo "packs=$list" >> "$GITHUB_OUTPUT"
 
-      - name: Upload build artifacts
+  build:
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pack: ${{ fromJSON(needs.discover.outputs.packs) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y zip jq
+
+      - name: Validate ${{ matrix.pack }}
+        shell: bash
+        run: |
+          d="packs/${{ matrix.pack }}/"
+          test -d "$d" || { echo "Missing dir $d"; exit 1; }
+          test -f "${d}pack.mcmeta" || { echo "Missing ${d}pack.mcmeta"; exit 1; }
+          jq -e '.pack.pack_format | type == "number"' "${d}pack.mcmeta" >/dev/null || {
+            echo "Invalid pack.mcmeta (pack.pack_format must be a number)"; exit 1; }
+          echo "OK: ${{ matrix.pack }}"
+
+      - name: Zip ${{ matrix.pack }}
+        shell: bash
+        run: |
+          d="packs/${{ matrix.pack }}/"
+          mkdir -p artifacts
+          zip -r -9 "artifacts/${{ matrix.pack }}.zip" "$d" \
+            -x "*.git*" "*/.DS_Store" "*/Thumbs.db"
+          ls -lh artifacts
+
+      - name: Upload artifact (${{ matrix.pack }})
         uses: actions/upload-artifact@v4
         with:
-          name: datapacks
-          path: artifacts/*.zip
+          name: ${{ matrix.pack }}
+          path: artifacts/${{ matrix.pack }}.zip
+          if-no-files-found: error
+          retention-days: 14
 
   release:
-    runs-on: ubuntu-latest
     needs: build
     if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
     steps:
-      - name: Download artifacts
+      - name: Download all pack artifacts
         uses: actions/download-artifact@v4
         with:
-          name: datapacks
+          pattern: "*"
+          merge-multiple: true
           path: artifacts
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: artifacts/*.zip
+          generate_release_notes: true
           draft: false
           prerelease: false
         env:
