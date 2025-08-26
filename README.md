@@ -143,25 +143,6 @@ Workflow file: `.github/workflows/build-datapacks.yml`
 
 ---
 
-## 🧑‍💻 Development (with Codespaces)
-
-1. Open this repo in **GitHub Codespaces**.
-2. Edit or add datapacks under `packs/<Name>/`.
-3. Commit & push changes from the VS Code Source Control tab.
-4. CI will build zip files automatically.
-
----
-
-## 📝 Contribution Guidelines
-
-- Keep datapacks self-contained under their own folder.
-- Include a valid `pack.mcmeta`.
-- Add a `README.md` inside each datapack describing features/commands.
-- Test in singleplayer before committing.
-- Use clear commit messages (`feat:`, `fix:`, `docs:`).
-
----
-
 ## 📜 License
 
 This project is licensed under the [MIT License](LICENSE).
@@ -173,3 +154,11 @@ This project is licensed under the [MIT License](LICENSE).
 - Issues & suggestions → [GitHub Issues](../../issues).
 - PRs welcome.
 - Star ⭐ this repo if you find the datapacks useful!
+
+---
+
+## 💖 Donation
+
+If you find these datapacks helpful or fun, please consider supporting development:
+
+[💸 Donate via PayPal](https://www.paypal.com/donate/?business=6TUCF33LPY9K2&no_recurring=0&item_name=Development+and+Coding+Features&currency_code=USD)
