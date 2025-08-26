@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write 
+  contents: write
 
 concurrency:
   group: build-datapacks-${{ github.ref }}
@@ -26,6 +26,7 @@ jobs:
         id: find
         shell: bash
         run: |
+          set -euo pipefail
           shopt -s nullglob
           json="["
           sep=""
@@ -38,7 +39,8 @@ jobs:
           done
           json="${json}]"
           if [ "$json" = "[]" ]; then
-            echo "No valid packs (with pack.mcmeta) found in /packs"; exit 1
+            echo "No valid packs (with pack.mcmeta) found in /packs"
+            exit 1
           fi
           echo "Found packs: $json"
           echo "packs=$json" >> "$GITHUB_OUTPUT"
@@ -61,10 +63,10 @@ jobs:
       - name: Validate ${{ matrix.pack }}
         shell: bash
         run: |
+          set -euo pipefail
           d="packs/${{ matrix.pack }}/"
           test -d "$d" || { echo "Missing dir $d"; exit 1; }
           test -f "${d}pack.mcmeta" || { echo "Missing ${d}pack.mcmeta"; exit 1; }
-          # Ensure pack_format exists and is numeric
           pf=$(grep -oE '"pack_format"\s*:\s*[0-9]+' "${d}pack.mcmeta" | grep -oE '[0-9]+' || true)
           if [ -z "$pf" ]; then
             echo "Invalid pack.mcmeta (pack.pack_format must be a number)"; exit 1
@@ -74,6 +76,7 @@ jobs:
       - name: Zip ${{ matrix.pack }}
         shell: bash
         run: |
+          set -euo pipefail
           d="packs/${{ matrix.pack }}/"
           mkdir -p artifacts
           zip -r -9 "artifacts/${{ matrix.pack }}.zip" "$d" \
@@ -100,12 +103,38 @@ jobs:
           merge-multiple: true
           path: artifacts
 
+      - name: Sanity check
+        shell: bash
+        run: |
+          set -euo pipefail
+          ls -lh artifacts || true
+          count=$(ls artifacts/*.zip 2>/dev/null | wc -l || echo 0)
+          if [ "$count" -eq 0 ]; then
+            echo "No ZIPs found in artifacts/; nothing to release."
+            exit 1
+          fi
+          echo "Found $count zip(s) to attach."
+
+      - name: Generate checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd artifacts
+          sha256sum *.zip > SHASUMS.txt
+          cat SHASUMS.txt
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/*.zip
+          files: |
+            artifacts/*.zip
+            artifacts/SHASUMS.txt
           generate_release_notes: true
           draft: false
           prerelease: false
+          name: ${{ github.ref_name }}
+          body: |
+            Automated build for ${{ github.ref_name }}.
+            Includes individually downloadable datapack zips for all packs in /packs.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
