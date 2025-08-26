@@ -28,6 +28,18 @@ Each pack enhances survival gameplay with new mechanics, quality-of-life feature
   - Bonus loot via custom loot table.
   - Eligible mob list in `data/apex/tags/entity_types/eligible.json`.
 
+### 🔨 RawBlockSmelter
+- **Version:** Minecraft 1.21.x (`pack_format: 48`)
+- **Description:** Allows **raw ore blocks** to be smelted into their ingot block counterparts.
+  - `raw_iron_block` → `iron_block`
+  - `raw_gold_block` → `gold_block`
+  - `raw_copper_block` → `copper_block`
+- **Features:**
+  - Works in both **furnaces** and **blast furnaces**.
+  - Cooking time = **9× longer** than single raw ore smelting.
+  - XP reward scaled to 9 items (default ~6.3 XP).
+  - Simple JSON recipe-based implementation.
+
 ---
 
 ## 🛠 Installation
@@ -103,6 +115,9 @@ Workflow file: `.github/workflows/build-datapacks.yml`
 │  │  ├─ pack.mcmeta
 │  │  └─ data/...
 │  ├─ ApexMobs/
+│  │  ├─ pack.mcmeta
+│  │  └─ data/...
+│  ├─ RawBlockSmelter/
 │  │  ├─ pack.mcmeta
 │  │  └─ data/...
 │  └─ Coming Soon/

@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "pack_format": 48,
+    "description": "Raw Block Smelting — smelt raw_iron_block/raw_gold_block/raw_copper_block (9× time) to their ingot blocks"
+  }
+}
