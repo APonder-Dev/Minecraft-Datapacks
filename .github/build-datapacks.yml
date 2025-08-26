@@ -7,7 +7,11 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: write 
+
+concurrency:
+  group: build-datapacks-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   discover:
@@ -18,19 +22,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Find pack folders
+      - name: Find pack folders (must contain pack.mcmeta)
         id: find
         shell: bash
         run: |
           shopt -s nullglob
-          arr=(packs/*/)
-          if [ ${#arr[@]} -eq 0 ]; then
-            echo "No packs found in /packs"; exit 1
+          json="["
+          sep=""
+          for d in packs/*/ ; do
+            if [ -f "${d}pack.mcmeta" ]; then
+              name=$(basename "$d")
+              json="${json}${sep}\"${name//\"/\\\"}\""
+              sep=","
+            fi
+          done
+          json="${json}]"
+          if [ "$json" = "[]" ]; then
+            echo "No valid packs (with pack.mcmeta) found in /packs"; exit 1
           fi
-          # Convert to JSON array of basenames: ["MobMutationPack","ApexMobs",...]
-          list=$(printf '%s\n' "${arr[@]}" | xargs -n1 basename | jq -R -s -c 'split("\n")|map(select(length>0))')
-          echo "Found packs: $list"
-          echo "packs=$list" >> "$GITHUB_OUTPUT"
+          echo "Found packs: $json"
+          echo "packs=$json" >> "$GITHUB_OUTPUT"
 
   build:
     needs: discover
@@ -44,8 +55,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install tools
-        run: sudo apt-get update && sudo apt-get install -y zip jq
+      - name: Install zip
+        run: sudo apt-get update && sudo apt-get install -y zip
 
       - name: Validate ${{ matrix.pack }}
         shell: bash
@@ -53,9 +64,12 @@ jobs:
           d="packs/${{ matrix.pack }}/"
           test -d "$d" || { echo "Missing dir $d"; exit 1; }
           test -f "${d}pack.mcmeta" || { echo "Missing ${d}pack.mcmeta"; exit 1; }
-          jq -e '.pack.pack_format | type == "number"' "${d}pack.mcmeta" >/dev/null || {
-            echo "Invalid pack.mcmeta (pack.pack_format must be a number)"; exit 1; }
-          echo "OK: ${{ matrix.pack }}"
+          # Ensure pack_format exists and is numeric
+          pf=$(grep -oE '"pack_format"\s*:\s*[0-9]+' "${d}pack.mcmeta" | grep -oE '[0-9]+' || true)
+          if [ -z "$pf" ]; then
+            echo "Invalid pack.mcmeta (pack.pack_format must be a number)"; exit 1
+          fi
+          echo "OK: ${{ matrix.pack }} (pack_format=$pf)"
 
       - name: Zip ${{ matrix.pack }}
         shell: bash
