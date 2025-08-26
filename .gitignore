@@ -10,3 +10,13 @@ Thumbs.db
 dist/
 out/
 artifacts/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+yarn-debug.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
