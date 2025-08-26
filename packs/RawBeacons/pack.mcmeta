@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "pack_format": 48,
+    "description": "RawBeacons — use raw_iron_block and raw_gold_block as beacon base blocks"
+  }
+}

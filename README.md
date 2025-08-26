@@ -40,6 +40,16 @@ Each pack enhances survival gameplay with new mechanics, quality-of-life feature
   - XP reward scaled to 9 items (default ~6.3 XP).
   - Simple JSON recipe-based implementation.
 
+### 🌟 Raw Beacons
+- **Version:** Minecraft 1.21.x (`pack_format: 48`)
+- **Description:** Expands beacon base compatibility to include raw blocks.
+  - `raw_iron_block`
+  - `raw_gold_block`
+- **Features:**
+  - Extends `#minecraft:beacon_base_blocks` tag.
+  - Fully vanilla-friendly — no commands needed.
+  - Combine with RawBlockSmelter for a **“Raw Blocks Expansion”** experience.
+
 ---
 
 ## 🛠 Installation
@@ -118,6 +128,9 @@ Workflow file: `.github/workflows/build-datapacks.yml`
 │  │  ├─ pack.mcmeta
 │  │  └─ data/...
 │  ├─ RawBlockSmelter/
+│  │  ├─ pack.mcmeta
+│  │  └─ data/...
+│  ├─ RawBeacons/
 │  │  ├─ pack.mcmeta
 │  │  └─ data/...
 │  └─ Coming Soon/
