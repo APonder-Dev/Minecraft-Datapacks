@@ -50,6 +50,14 @@ Each pack enhances survival gameplay with new mechanics, quality-of-life feature
   - Fully vanilla-friendly — no commands needed.
   - Combine with RawBlockSmelter for a **“Raw Blocks Expansion”** experience.
 
+### 📦 EzChests
+- **Version:** Minecraft 1.21.x (`pack_format: 48`)
+- **Description:** Adds **log-based recipes** for crafting chests & trapped chests.
+- **Features:**
+  - **Chest Recipe**: 8 logs/stems/hyphae in a ring (center empty) → **4 Chests**.
+  - **Trapped Chest Recipe**: 8 logs in a ring + **Tripwire Hook** in the center → **4 Trapped Chests**.
+  - Supports all overworld logs (Oak, Birch, Spruce, Jungle, Acacia, Dark Oak, Cherry, Mangrove, Pale Oak) plus **Crimson/Warped stems & hyphae**.
+  - Vanilla plank recipes still work — these are additive options.
 ---
 
 ## 🛠 Installation
@@ -131,6 +139,9 @@ Workflow file: `.github/workflows/build-datapacks.yml`
 │  │  ├─ pack.mcmeta
 │  │  └─ data/...
 │  ├─ RawBeacons/
+│  │  ├─ pack.mcmeta
+│  │  └─ data/...
+│  ├─ EzChests/
 │  │  ├─ pack.mcmeta
 │  │  └─ data/...
 │  └─ Coming Soon/

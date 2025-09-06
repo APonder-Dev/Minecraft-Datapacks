@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "trapped_chest",
+  "pattern": [
+    "LLL",
+    "LHL",
+    "LLL"
+  ],
+  "key": {
+    "L": { "tag": "ezchests:logs_all" },
+    "H": { "item": "minecraft:tripwire_hook" }
+  },
+  "result": { "item": "minecraft:trapped_chest", "count": 4 },
+  "show_notification": true
+}
