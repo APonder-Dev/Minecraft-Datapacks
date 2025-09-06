@@ -1,0 +1,11 @@
+{
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:player_mined_block",
+      "conditions": {
+        "block": { "tag": "minecraft:logs" }
+      }
+    }
+  },
+  "rewards": { "function": "harvestbits:grant_break_xp" }
+}

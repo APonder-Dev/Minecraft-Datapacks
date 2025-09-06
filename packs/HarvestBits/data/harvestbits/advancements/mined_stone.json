@@ -1,0 +1,9 @@
+{
+  "criteria": {
+    "c": {
+      "trigger": "minecraft:player_mined_block",
+      "conditions": { "block": "minecraft:stone" }
+    }
+  },
+  "rewards": { "function": "harvestbits:grant_break_xp" }
+}

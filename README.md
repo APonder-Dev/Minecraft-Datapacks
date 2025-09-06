@@ -58,6 +58,16 @@ Each pack enhances survival gameplay with new mechanics, quality-of-life feature
   - **Trapped Chest Recipe**: 8 logs in a ring + **Tripwire Hook** in the center → **4 Trapped Chests**.
   - Supports all overworld logs (Oak, Birch, Spruce, Jungle, Acacia, Dark Oak, Cherry, Mangrove, Pale Oak) plus **Crimson/Warped stems & hyphae**.
   - Vanilla plank recipes still work — these are additive options.
+
+  ### 🌾 HarvestBits
+- **Version:** Minecraft 1.21.x (`pack_format: 48`)
+- **Description:** Awards **1 XP (point)** on a **10% chance** when breaking **Stone**, **Deepslate**, or **any Log**, plus occasional **ambient XP** near **naturally decaying leaves**.
+- **Features:**
+  - Chance controlled via predicate `data/harvestbits/predicates/xpchance.json`.
+  - Mining triggers via advancements (`stone`, `deepslate`, `minecraft:logs` tag).
+  - Leaf-decay XP is lightweight: periodic scan spawns a **1-XP orb** near leaves with `persistent=false` & `distance=7` (max 1 per player per second).
+  - Zero commands required; works on load.
+
 ---
 
 ## 🛠 Installation
@@ -111,6 +121,20 @@ Each pack enhances survival gameplay with new mechanics, quality-of-life feature
 - Eligible mobs:  
   Edit `data/mobmut/tags/entity_types/eligible.json`.
 
+### HarvestBits
+- Adjust the XP chance (default 10%):
+  ```json
+  // data/harvestbits/predicates/xpchance.json
+  { "condition": "minecraft:random_chance", "chance": 0.10 }
+  ```
+  Lower to 0.05 (5%) for rarer XP, or raise as desired.
+- Change leaf scan frequency (default every 20 ticks):
+  ```mcfunction
+  # data/harvestbits/functions/scan.mcfunction
+  schedule function harvestbits:scan 20t replace
+  ```
+  Increase/decrease the tick value to adjust how often ambient leaf XP can occur.
+
 ---
 
 ## 🤖 Continuous Integration (CI)
@@ -142,6 +166,9 @@ Workflow file: `.github/workflows/build-datapacks.yml`
 │  │  ├─ pack.mcmeta
 │  │  └─ data/...
 │  ├─ EzChests/
+│  │  ├─ pack.mcmeta
+│  │  └─ data/...
+│  ├─ HarvestBits/
 │  │  ├─ pack.mcmeta
 │  │  └─ data/...
 │  └─ Coming Soon/
