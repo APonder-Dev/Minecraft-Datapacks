@@ -68,6 +68,18 @@ Each pack enhances survival gameplay with new mechanics, quality-of-life feature
   - Leaf-decay XP is lightweight: periodic scan spawns a **1-XP orb** near leaves with `persistent=false` & `distance=7` (max 1 per player per second).
   - Zero commands required; works on load.
 
+### 💎 TrialsFortune
+- **Version:** Minecraft 1.21.x (`pack_format: 48`)
+- **Description:** Overhauls **Trial Chambers loot** to make rewards more exciting and configurable.
+- **Features:**
+  - Overrides the **4 core loot tables**:
+    - `vault.json` (normal vaults)  
+    - `ominous_vault.json` (ominous vaults)  
+    - `spawner_reward.json` (trial spawners)  
+    - `ominous_spawner_reward.json` (ominous trial spawners)  
+  - Keeps Mojang’s **3-pool distribution structure** for balance.  
+  - Maintains vanilla distribution.
+    
 ---
 
 ## 🛠 Installation
@@ -124,7 +136,7 @@ Each pack enhances survival gameplay with new mechanics, quality-of-life feature
 ### HarvestBits
 - Adjust the XP chance (default 10%):
   ```json
-  // data/harvestbits/predicates/xpchance.json
+  # data/harvestbits/predicates/xpchance.json
   { "condition": "minecraft:random_chance", "chance": 0.10 }
   ```
   Lower to 0.05 (5%) for rarer XP, or raise as desired.
@@ -154,29 +166,19 @@ Workflow file: `.github/workflows/build-datapacks.yml`
 .
 ├─ packs/                   # Datapacks live here
 │  ├─ MobMutationPack/
-│  │  ├─ pack.mcmeta
-│  │  └─ data/...
 │  ├─ ApexMobs/
-│  │  ├─ pack.mcmeta
-│  │  └─ data/...
 │  ├─ RawBlockSmelter/
-│  │  ├─ pack.mcmeta
-│  │  └─ data/...
 │  ├─ RawBeacons/
-│  │  ├─ pack.mcmeta
-│  │  └─ data/...
 │  ├─ EzChests/
-│  │  ├─ pack.mcmeta
-│  │  └─ data/...
 │  ├─ HarvestBits/
-│  │  ├─ pack.mcmeta
-│  │  └─ data/...
+│  ├─ TrialsFortune/
 │  └─ Coming Soon/
 ├─ .github/workflows/       # GitHub Actions configs
 ├─ .gitignore
 ├─ .gitattributes
 ├─ LICENSE
 └─ README.md
+
 ```
 
 ---
