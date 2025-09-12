@@ -193,7 +193,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 - Issues & suggestions → [GitHub Issues](../../issues).
 - PRs welcome.
-- Star ⭐ this repo if you find the datapacks useful!
+- Star ⭐ this repo if you find the datapacks useful or use any of them!
 
 ---
 
